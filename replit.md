@@ -48,6 +48,17 @@ Every package extends `tsconfig.base.json` which sets `composite: true`. The roo
 - `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
 - `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
 
+## Artifacts
+
+### `artifacts/chat-dashboard` (`@workspace/chat-dashboard`)
+
+Chat Dashboard — a Chatwoot-connected 3-column dark-theme support interface.
+
+- React + Vite frontend at preview path `/`
+- 3-column layout: Sidebar (conversations), ChatArea (messages), ContactPanel (contact info)
+- Connects to Chatwoot via backend proxy routes
+- Required secrets: `CHATWOOT_URL`, `CHATWOOT_ACCOUNT_ID`, `CHATWOOT_ACCESS_TOKEN`
+
 ## Packages
 
 ### `artifacts/api-server` (`@workspace/api-server`)
