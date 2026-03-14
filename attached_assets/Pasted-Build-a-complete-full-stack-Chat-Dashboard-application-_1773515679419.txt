@@ -1,0 +1,147 @@
+Build a complete full-stack Chat Dashboard application similar to Chatwoot.
+
+VERY IMPORTANT: Use ONLY npm as the package manager. Do NOT use pnpm, yarn, bun, or any other package manager. Every install command must use npm. Do not create any pnpm-workspace.yaml, pnpm-lock.yaml or any pnpm config files.
+
+---
+
+TECH STACK:
+- Frontend: React + Vite, TailwindCSS v3, Axios, React Router DOM
+- Backend: Node.js + Express
+- Package manager: npm ONLY
+
+---
+
+PROJECT STRUCTURE (exact):
+
+chat-dashboard/
+├── server/
+│   ├── server.js
+│   ├── chatwootService.js
+│   └── package.json
+├── src/
+│   ├── components/
+│   │   ├── Sidebar.jsx
+│   │   ├── ConversationList.jsx
+│   │   ├── ConversationItem.jsx
+│   │   ├── ChatWindow.jsx
+│   │   ├── MessageBubble.jsx
+│   │   ├── MessageInput.jsx
+│   │   └── ContactPanel.jsx
+│   ├── pages/
+│   │   └── Dashboard.jsx
+│   ├── services/
+│   │   └── api.js
+│   ├── App.jsx
+│   ├── main.jsx
+│   └── index.css
+├── index.html
+├── .env.example
+├── package.json
+├── vite.config.js
+├── tailwind.config.js
+└── postcss.config.js
+
+---
+
+ENVIRONMENT VARIABLES (in server/.env):
+
+CHATWOOT_URL=
+ACCOUNT_ID=
+CHATWOOT_ACCESS_TOKEN=
+
+---
+
+BACKEND (server/server.js) - Express on port 5000:
+
+GET  /api/conversations                        → fetch from Chatwoot
+GET  /api/messages/:conversationId             → fetch messages
+POST /api/sendMessage                          → body: { conversationId, content }
+POST /api/toggleStatus                         → body: { conversationId, status }
+
+Use dotenv to read .env file. Use axios to call Chatwoot API.
+Chatwoot API base: {CHATWOOT_URL}/api/v1/accounts/{ACCOUNT_ID}/
+Header: api_access_token: {CHATWOOT_ACCESS_TOKEN}
+
+server/package.json must have "type": "module" and use ES module imports.
+server dependencies (npm): express, cors, dotenv, axios
+
+---
+
+FRONTEND SETUP:
+
+Root package.json scripts:
+- "dev": "vite"
+- "build": "vite build"
+
+vite.config.js must proxy /api to http://localhost:5000
+
+Frontend dependencies (npm): react, react-dom, react-router-dom, axios
+Frontend devDependencies (npm): vite, @vitejs/plugin-react, tailwindcss@3, postcss, autoprefixer
+
+---
+
+UI LAYOUT (3 columns, full viewport height, dark theme):
+
+LEFT PANEL (w-72):
+- Header with Inbox title
+- Search bar to filter conversations
+- Scrollable conversation list
+- Each item: avatar, contact name, last message preview, unread badge, timestamp
+
+CENTER PANEL (flex-1):
+- Header: contact name + conversation ID + status badge
+- Scrollable message history
+  - Incoming messages: left side, gray bubble
+  - Outgoing messages: right side, blue bubble
+  - Each bubble: content + timestamp
+- Auto-scroll to bottom on new messages
+- Bottom input: textarea + send button, Enter key sends
+
+RIGHT PANEL (w-64):
+- Contact avatar, name, status badge
+- Email and phone if available
+- Button: "Resolve" (if open) or "Reopen" (if resolved)
+
+---
+
+DARK THEME:
+- Background: slate-950 / slate-900
+- Panels: slate-900 / slate-800
+- Borders: slate-700
+- Text: slate-100 / slate-300 / slate-400
+- Accent: blue-600
+- Use TailwindCSS utility classes throughout
+
+---
+
+FEATURES:
+- Load conversations on page load, auto-select first one
+- Click conversation → load its messages
+- Send message via input or Enter key
+- Resolve/Reopen conversation from right panel
+- Search/filter conversations by contact name or message content
+- Loading spinners while fetching
+- Error state if Chatwoot credentials are wrong
+- Unread count badges on conversation items
+
+---
+
+HOW TO RUN (after filling server/.env):
+
+Terminal 1 (backend):
+  cd server
+  npm install
+  node server.js
+
+Terminal 2 (frontend):
+  npm install
+  npm run dev
+
+Frontend: http://localhost:5173
+Backend:  http://localhost:5000
+
+---
+
+GOAL: Generate the complete working project. I will only add my CHATWOOT_URL, ACCOUNT_ID, and CHATWOOT_ACCESS_TOKEN in server/.env and it must work immediately.
+
+No broken imports. No missing files. No pnpm. Only npm.

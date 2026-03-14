@@ -1,22 +1,24 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: Chat Dashboard API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: conversations
+    description: Conversation operations
+  - name: messages
+    description: Message operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +26,81 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /conversations:
+    get:
+      operationId: getConversations
+      tags: [conversations]
+      summary: Get all conversations
+      responses:
+        "200":
+          description: List of conversations
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Conversation"
+
+  /messages/{conversationId}:
+    get:
+      operationId: getMessages
+      tags: [messages]
+      summary: Get messages for a conversation
+      parameters:
+        - name: conversationId
+          in: path
+          required: true
+          schema:
+            type: number
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+
+  /sendMessage:
+    post:
+      operationId: sendMessage
+      tags: [messages]
+      summary: Send a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SendMessageRequest"
+      responses:
+        "200":
+          description: Message sent
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  /toggleStatus:
+    post:
+      operationId: toggleStatus
+      tags: [conversations]
+      summary: Toggle conversation status
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ToggleStatusRequest"
+      responses:
+        "200":
+          description: Status updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Conversation"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +111,96 @@ components:
       required:
         - status
 
+    Contact:
+      type: object
+      properties:
+        id:
+          type: number
+        name:
+          type: string
+        email:
+          type: string
+          nullable: true
+        phone_number:
+          type: string
+          nullable: true
+        avatar_url:
+          type: string
+          nullable: true
+      required:
+        - id
+        - name
+
+    Conversation:
+      type: object
+      properties:
+        id:
+          type: number
+        status:
+          type: string
+        unread_count:
+          type: number
+        last_activity_at:
+          type: number
+          nullable: true
+        meta:
+          type: object
+          properties:
+            sender:
+              $ref: "#/components/schemas/Contact"
+            assignee:
+              nullable: true
+              $ref: "#/components/schemas/Contact"
+          required:
+            - sender
+        messages:
+          type: array
+          items:
+            $ref: "#/components/schemas/Message"
+      required:
+        - id
+        - status
+        - unread_count
+        - meta
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: number
+        content:
+          type: string
+          nullable: true
+        message_type:
+          type: number
+        created_at:
+          type: number
+        sender:
+          nullable: true
+          $ref: "#/components/schemas/Contact"
+      required:
+        - id
+        - message_type
+        - created_at
+
+    SendMessageRequest:
+      type: object
+      properties:
+        conversationId:
+          type: number
+        content:
+          type: string
+      required:
+        - conversationId
+        - content
+
+    ToggleStatusRequest:
+      type: object
+      properties:
+        conversationId:
+          type: number
+        status:
+          type: string
+      required:
+        - conversationId
+        - status

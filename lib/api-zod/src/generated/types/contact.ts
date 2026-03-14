@@ -6,6 +6,10 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface HealthStatus {
-  status: string;
+export interface Contact {
+  id: number;
+  name: string;
+  email?: string | null;
+  phone_number?: string | null;
+  avatar_url?: string | null;
 }

@@ -1,0 +1,17 @@
+packages:
+  "date-fns": "For precise, human-readable message timestamps"
+  "framer-motion": "For fluid message entry animations and panel transitions"
+  "clsx": "For conditional class string joining"
+  "tailwind-merge": "For conflict-free tailwind class merging"
+
+images:
+  - path: "artifacts/chat-dashboard/public/images/empty-state.png"
+    description: "Dark, sleek abstract 3d geometric shapes, floating in deep space, holographic neon blue and purple accents, moody professional aesthetic"
+    aspect_ratio: "16:9"
+  - path: "artifacts/chat-dashboard/public/images/logo-mark.png"
+    description: "Minimalist modern chat bubble logo mark, glassmorphism style, glowing edges, dark background"
+    aspect_ratio: "1:1"
+
+notes:
+  - Expects backend API proxy mapped correctly under /api
+  - The API types are imported directly from the generated @workspace/api-client-react
