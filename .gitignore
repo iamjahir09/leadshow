@@ -47,3 +47,10 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+# environment files
+.env
+.env.local
+.env.development
+.env.production
+chat-dashboard-npm/server/.env
+chat-dashboard/artifacts/api-server/.env
